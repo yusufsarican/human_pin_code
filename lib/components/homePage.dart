@@ -61,10 +61,7 @@ class _HomePageState extends State<HomePage> {
   TextButton showCodeButton() {
     return TextButton(
       onPressed: () {
-        setState(() {
-          birthDate =
-              '${dayController.text}  ${monthController.text}  ${yearController.text}';
-        });
+        pinCodeCalculator();
       },
       child: const Text(
         'Show Pin Code',
@@ -149,5 +146,47 @@ class _HomePageState extends State<HomePage> {
             border: OutlineInputBorder(), labelText: 'Day', hintText: "27"),
       ),
     );
+  }
+
+  int calculatePinCode(int giveNumber) {
+    int calculated = giveNumber;
+    while (calculated >= 10) {
+      int temporary = 0;
+      while (calculated > 0) {
+        temporary += calculated % 10;
+        calculated ~/= 10;
+      }
+      calculated = temporary;
+    }
+    return calculated;
+  }
+
+  void pinCodeCalculator() {
+    int rowOne = calculatePinCode(int.parse(dayController.text));
+    int rowTwo = calculatePinCode(int.parse(monthController.text));
+    int rowThree = calculatePinCode(int.parse(yearController.text));
+    int rowFour = calculatePinCode(rowOne + rowTwo + rowThree);
+    int rowFive = calculatePinCode(rowOne + rowFour);
+    int rowSix = calculatePinCode(rowOne + rowTwo);
+    int rowSeven = calculatePinCode(rowTwo + rowThree);
+    int rowEight = calculatePinCode(rowSix + rowSeven);
+    int rowNine = calculatePinCode(rowOne +
+        rowTwo +
+        rowThree +
+        rowFour +
+        rowFive +
+        rowSix +
+        rowSeven +
+        rowEight);
+
+    print('rowOne: $rowOne' +
+        ' rowTwo: $rowTwo' +
+        ' rowThree: $rowThree' +
+        ' rowFour: $rowFour' +
+        ' rowFive: $rowFive' +
+        ' rowSix: $rowSix' +
+        ' rowSeven: $rowSeven' +
+        ' rowEight: $rowEight' +
+        ' rowNine: $rowNine');
   }
 }
